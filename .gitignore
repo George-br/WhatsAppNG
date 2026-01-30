@@ -1,0 +1,39 @@
+# NVDA Add-on build artifacts
+*.nvda-addon
+build/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+downloads/
+
+# SCons
+.sconsign.dblite
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
+.tmp/
+
+# Localization (keep .pot and .po, ignore generated .mo)
+locale/**/*.mo
+
+# Keep base language files as per gitignore in addon template
+locale/en/LC_MESSAGES/nvda.po
+locale/en/LC_MESSAGES/nvda.mo

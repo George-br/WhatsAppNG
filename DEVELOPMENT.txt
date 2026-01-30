@@ -1,0 +1,148 @@
+========================================================
+      WhatsApp NG - Development Instructions
+========================================================
+
+FOLDER STRUCTURE
+=================
+
+whatsAppNG/
+├── manifest.ini                    # Add-on metadata
+├── addon/                          # Required folder
+│   └── appModules/
+│       └── whatsapp_root.py       # Main code
+├── locale/                         # Translations
+│   ├── pt_BR/                      # Portuguese (Brazil)
+│   │   ├── manifest.ini            # Translated manifest
+│   │   └── LC_MESSAGES/
+│   │       ├── nvda.pot            # Template
+│   │       ├── nvda.po             # Translation
+│   │       └── nvda.mo             # Compiled
+│   └── [other languages]/
+├── DEVELOPMENT.txt                 # This file
+├── COMO_COMPILAR_TRADUCOES.md      # Translation compilation guide
+└── README.md                       # Documentation
+
+
+INSTALLING GETTEXT TOOLS ON PYTHON (Windows)
+================================================
+
+1. DOWNLOAD GNU GETTEXT
+   - Go to: http://gnuwin32.sourceforge.net/downlinks/gettext.php
+   - Download and install the binary
+   - OR download the .zip and extract
+
+2. COPY NECESSARY FILES
+   After installation, copy these 2 files to the add-on folder:
+   - msgfmt.exe
+   - xgettext.exe
+
+   Default installation location:
+   C:\Program Files (x86)\GnuWin32\bin\
+
+
+INSTALLATION VIA PYTHON (Alternative)
+========================================
+
+If you have Python installed, you can use pip:
+
+pip install gettext
+
+Or via WSL (Windows Subsystem for Linux):
+sudo apt-get install gettext
+
+
+TRANSLATION COMMANDS
+======================
+
+1. GENERATE TEMPLATE (.pot) - Extract strings from code
+   xgettext --language=Python --keyword=_ --output=locale/nvda.pot addon/appModules/*.py
+
+2. CREATE TRANSLATION FOR A LANGUAGE
+   # Copy template
+   mkdir -p locale/pt_BR/LC_MESSAGES
+   cp locale/nvda.pot locale/pt_BR/LC_MESSAGES/nvda.po
+
+   # Edit nvda.po in Poedit or text editor
+   # Translate all strings in msgstr
+
+3. COMPILE TRANSLATION (.po → .mo)
+   msgfmt locale/pt_BR/LC_MESSAGES/nvda.po -o locale/pt_BR/LC_MESSAGES/nvda.mo
+
+4. TRANSLATE MANIFEST.INI
+   Create file: locale/pt_BR/manifest.ini
+   ```
+   summary = "Translated summary"
+   description = "Translated description"
+   ```
+
+
+PACKAGING THE ADD-ON
+=======================
+
+Option 1 - Manual (zip):
+1. Select all files inside whatsAppNG folder
+2. Compress as .zip
+3. Rename .zip to .nvda-addon
+
+Option 2 - SCons:
+1. Install SCons: pip install SCons
+2. In add-on folder: scons
+3. The .nvda-addon file will be generated automatically
+
+
+TESTING DURING DEVELOPMENT
+============================
+
+1. Enable scratchpad in NVDA:
+   - NVDA menu → Preferences/Settings → Advanced
+   - Check "Enable loading custom code from Developer Scratchpad directory"
+
+2. Copy code for testing:
+   - Your code goes in: scratchpad/appModules/whatsapp_root.py
+   - Restart NVDA
+
+
+CHECKING TRANSLATIONS
+=====================
+
+In Python code, all translatable strings should use:
+```python
+import addonHandler
+addonHandler.initTranslation()
+
+# Examples:
+ui.message(_("Hello"))
+description=_("Go to conversation list")
+```
+
+
+SUPPORTED LANGUAGE CODES
+=========================
+
+pt_BR - Portuguese (Brazil)
+pt - Portuguese
+en - English
+es - Spanish
+fr - French
+de - German
+it - Italian
+ru - Russian
+ar - Arabic
+ja - Japanese
+zh_CN - Chinese Simplified
+... and others
+
+
+DISTRIBUTION
+============
+
+1. Thoroughly test the add-on
+2. Generate compiled version (.nvda-addon)
+3. Upload to GitHub or submit to NVDA Community Add-ons
+
+
+SUPPORT
+========
+
+Issues: https://github.com/nrfcosta21/whatsAppNG/issues
+Discussions: https://github.com/nrfcosta21/whatsAppNG/discussions
